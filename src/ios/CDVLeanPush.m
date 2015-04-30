@@ -4,6 +4,23 @@
 
 @implementation CDVLeanPush
 
+- (void)getInstallation:(CDVInvokedUrlCommand *)command
+{
+    CDVPluginResult* pluginResult = nil;
+    
+    NSLog(@"CDVLeanPush getInstallation");
+    
+    AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+    if(currentInstallation != nil && currentInstallation.deviceToken != nil) {
+        NSLog(@"device token: %@", currentInstallation.deviceToken);
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"ios,%@", currentInstallation.deviceToken]];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Fail to get Installation."];
+    }
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)subscribe:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;

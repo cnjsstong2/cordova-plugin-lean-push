@@ -8,6 +8,8 @@
 @property (nonatomic, strong) NSString *leancloudAppId;
 @property (nonatomic, strong) NSString *leancloudAppKey;
 
+- (void)getInstallation:(CDVInvokedUrlCommand *)command;
+
 - (void)subscribe:(CDVInvokedUrlCommand *)command;
 - (void)unsubscribe:(CDVInvokedUrlCommand *)command;
 - (void)clearSubscription:(CDVInvokedUrlCommand *)command;

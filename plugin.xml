@@ -1,47 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  id="com.sum.cordova.leanpush" version="0.0.2">
-  <name>LeanPush</name>
-  <js-module src="www/LeanPush.js" name="LeanPush">
-    <clobbers target="LeanPush"/>
-  </js-module>
-  
-  <preference name="LEAN_APP_ID"/>
-  <preference name="LEAN_APP_KEY"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.farseerinc.cordovalibs.leanpush" version="0.0.2">
+    <name>LeanPush</name>
+    <js-module src="www/LeanPush.js" name="LeanPush">
+        <clobbers target="LeanPush"/>
+    </js-module>
 
-  <platform name="ios">
-    <config-file parent="/*" target="config.xml">
-      <feature name="LeanPush">
-        <param name="ios-package" value="CDVLeanPush"/>
-      </feature>
-      <preference name="leancloud-appid" value="$LEAN_APP_ID"/>
-      <preference name="leancloud-appkey" value="$LEAN_APP_KEY"/>
-    </config-file>
+    <preference name="LEAN_APP_ID"/>
+    <preference name="LEAN_APP_KEY"/>
 
-    <!-- Plugin source code -->
-    <header-file src="src/ios/CDVLeanPush.h"/>
-    <source-file src="src/ios/CDVLeanPush.m"/>
-    <header-file src="src/ios/AppDelegate+LeanPush.h"/>
-    <source-file src="src/ios/AppDelegate+LeanPush.m"/>
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="LeanPush">
+                <param name="ios-package" value="CDVLeanPush"/>
+            </feature>
+            <preference name="leancloud-appid" value="$LEAN_APP_ID"/>
+            <preference name="leancloud-appkey" value="$LEAN_APP_KEY"/>
+        </config-file>
 
-    <!-- LeanCloud Official -->
-    <framework src="src/ios/Frameworks/AVOSCloud.framework" custom="true"/>
+        <!-- Plugin source code -->
+        <header-file src="src/ios/CDVLeanPush.h"/>
+        <source-file src="src/ios/CDVLeanPush.m"/>
+        <header-file src="src/ios/AppDelegate+LeanPush.h"/>
+        <source-file src="src/ios/AppDelegate+LeanPush.m"/>
 
-    <!-- Other required frameworks -->
-    <framework src="SystemConfiguration.framework"/>
-    <framework src="MobileCoreServices.framework"/>
-    <framework src="CoreTelephony.framework"/>
-    <framework src="CoreLocation.framework"/>
-    <framework src="libicucore.dylib"/>
-  </platform>
-  <!-- <platform name="android">
-    <config-file parent="/*" target="res/xml/config.xml">
-      <feature name="LeanPush">
-        <param name="android-package" value="com.sum.cordova.leanpush.LeanPush"/>
-      </feature>
-    </config-file>
-    <config-file parent="/*" target="AndroidManifest.xml"/>
-    <source-file src="src/android/LeanPush.java" target-dir="src/com/sum/cordova/leanpush/LeanPush"/>
-  </platform> -->
+        <!-- LeanCloud Official -->
+        <framework src="src/ios/Frameworks/AVOSCloud.framework" custom="true"/>
+
+        <!-- Other required frameworks -->
+        <framework src="SystemConfiguration.framework"/>
+        <framework src="MobileCoreServices.framework"/>
+        <framework src="CoreTelephony.framework"/>
+        <framework src="CoreLocation.framework"/>
+        <framework src="libicucore.dylib"/>
+    </platform>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="LeanPush">
+                <param name="android-package" value="com.farseerinc.cordovalibs.leanpush.LeanPush"/>
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        </config-file>
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <service android:name="com.avos.avoscloud.PushService"/>
+            <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                    <action android:name="android.intent.action.USER_PRESENT"/>
+                </intent-filter>
+            </receiver>
+        </config-file>
+        <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPush.java"
+                     target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
+
+        <source-file src="src/android/libs/android-async-http-1.4.6.jar" target-dir="libs" framework="true"/>
+        <source-file src="src/android/libs/avoscloud-push-v3.1.5.jar" target-dir="libs" framework="true"/>
+        <source-file src="src/android/libs/avoscloud-sdk-v3.1.5.jar" target-dir="libs" framework="true"/>
+        <source-file src="src/android/libs/fastjson.jar" target-dir="libs" framework="true"/>
+        <source-file src="src/android/libs/httpmime-4.2.4.jar" target-dir="libs" framework="true"/>
+        <source-file src="src/android/libs/Java-WebSocket-1.2.0-leancloud.jar" target-dir="libs" framework="true"/>
+    </platform>
 </plugin>

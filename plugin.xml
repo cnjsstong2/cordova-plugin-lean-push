@@ -57,8 +57,6 @@
         </config-file>
         <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPush.java"
                      target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
-        <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPushReceiver.java"
-                     target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
 
         <source-file src="src/android/libs/android-async-http-1.4.6.jar" target-dir="libs" framework="true"/>
         <source-file src="src/android/libs/avoscloud-push-v3.1.5.jar" target-dir="libs" framework="true"/>

@@ -7,6 +7,11 @@ module.exports = {
         exec(success, error, "LeanPush", "getInstallation", []);
     },
 
+    register: function (config, success, error) {
+        console.log('register');
+        exec(success, error, "LeanPush", "register", [config]);
+    },
+
     subscribe: function (channel, success, error) {
         console.log('subscribe', channel);
         exec(success, error, "LeanPush", "subscribe", [channel]);

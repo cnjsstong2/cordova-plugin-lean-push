@@ -47,6 +47,7 @@
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
         </config-file>
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <activity android:name="com.farseerinc.cordovalibs.leanpush.LeanPushHandlerActivity" android:exported="true"/>
             <service android:name="com.avos.avoscloud.PushService"/>
             <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
                 <intent-filter>
@@ -56,6 +57,9 @@
             </receiver>
         </config-file>
         <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPush.java"
+                     target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
+
+        <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPushHandlerActivity.java"
                      target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
 
         <source-file src="src/android/libs/android-async-http-1.4.6.jar" target-dir="libs" framework="true"/>

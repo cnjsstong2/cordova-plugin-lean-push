@@ -39,6 +39,7 @@
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="LeanPush">
                 <param name="android-package" value="com.farseerinc.cordovalibs.leanpush.LeanPush"/>
+                <param name="onload" value="true" />
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml">
@@ -55,6 +56,8 @@
             </receiver>
         </config-file>
         <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPush.java"
+                     target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
+        <source-file src="src/android/src/com/farseerinc/cordovalibs/leanpush/LeanPushReceiver.java"
                      target-dir="src/com/farseerinc/cordovalibs/leanpush"/>
 
         <source-file src="src/android/libs/android-async-http-1.4.6.jar" target-dir="libs" framework="true"/>

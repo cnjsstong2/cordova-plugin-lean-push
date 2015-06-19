@@ -8,6 +8,14 @@
 @property (nonatomic, strong) NSString *leancloudAppId;
 @property (nonatomic, strong) NSString *leancloudAppKey;
 
+@property (nonatomic, copy) NSString *callbackId;
+@property (nonatomic, copy) NSString *notificationCallbackId;
+@property (nonatomic, copy) NSString *callback;
+
+- (void)notificationReceived:(NSDictionary*)notificationMessage;
+
+- (void)register:(CDVInvokedUrlCommand*)command;
+
 - (void)getInstallation:(CDVInvokedUrlCommand *)command;
 
 - (void)subscribe:(CDVInvokedUrlCommand *)command;

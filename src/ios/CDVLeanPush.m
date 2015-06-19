@@ -4,6 +4,74 @@
 
 @implementation CDVLeanPush
 
+- (void)register:(CDVInvokedUrlCommand*)command;
+{
+    NSLog(@"CDVLeanPush register");
+    self.callbackId = command.callbackId;
+    
+    NSMutableDictionary* options = [command.arguments objectAtIndex:0];
+    self.callback = [options objectForKey:@"ecb"];
+    
+    [self successWithMessage:@"registered"];
+}
+
+- (void)notificationReceived:(NSDictionary*)notificationMessage {
+    NSLog(@"Notification received");
+    
+    if (notificationMessage && self.callback)
+    {
+        NSMutableString *jsonStr = [NSMutableString stringWithString:@"{"];
+        [self parseDictionary:notificationMessage intoJSON:jsonStr];
+        [jsonStr appendString:@"}"];
+        
+        NSLog(@"notification message: %@", jsonStr);
+        
+        NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
+        [self.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+    }
+}
+
+-(void)parseDictionary:(NSDictionary *)inDictionary intoJSON:(NSMutableString *)jsonString
+{
+    NSArray         *keys = [inDictionary allKeys];
+    NSString        *key;
+    
+    for (key in keys)
+    {
+        id thisObject = [inDictionary objectForKey:key];
+        
+        if ([thisObject isKindOfClass:[NSDictionary class]])
+        [self parseDictionary:thisObject intoJSON:jsonString];
+        else if ([thisObject isKindOfClass:[NSString class]])
+        [jsonString appendFormat:@"\"%@\":\"%@\",",
+         key,
+         [[[[inDictionary objectForKey:key]
+            stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"]
+           stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
+          stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"]];
+        else {
+            [jsonString appendFormat:@"\"%@\":\"%@\",", key, [inDictionary objectForKey:key]];
+        }
+    }
+}
+
+-(void)successWithMessage:(NSString *)message
+{
+    if (self.callbackId != nil)
+    {
+        CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:message];
+        [self.commandDelegate sendPluginResult:commandResult callbackId:self.callbackId];
+    }
+}
+
+-(void)failWithMessage:(NSString *)message withError:(NSError *)error
+{
+    NSString        *errorMessage = (error) ? [NSString stringWithFormat:@"%@ - %@", message, [error localizedDescription]] : message;
+    CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:errorMessage];
+    
+    [self.commandDelegate sendPluginResult:commandResult callbackId:self.callbackId];
+}
+
 - (void)getInstallation:(CDVInvokedUrlCommand *)command
 {
     CDVPluginResult* pluginResult = nil;

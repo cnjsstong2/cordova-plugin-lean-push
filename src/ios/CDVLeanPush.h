@@ -12,6 +12,9 @@
 @property (nonatomic, copy) NSString *notificationCallbackId;
 @property (nonatomic, copy) NSString *callback;
 
+@property (nonatomic, retain) NSDictionary	*launchNotification;
+
+
 - (void)notificationReceived:(NSDictionary*)notificationMessage;
 
 - (void)register:(CDVInvokedUrlCommand*)command;

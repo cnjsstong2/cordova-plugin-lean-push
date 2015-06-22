@@ -12,23 +12,37 @@
     NSMutableDictionary* options = [command.arguments objectAtIndex:0];
     self.callback = [options objectForKey:@"ecb"];
     
+    if(self.launchNotification) {
+        [self sendNotificationMessage:self.launchNotification];
+        self.launchNotification = nil;
+    }
+    
     [self successWithMessage:@"registered"];
 }
 
-- (void)notificationReceived:(NSDictionary*)notificationMessage {
+- (void)notificationReceived:(NSDictionary*)notificationMessage
+{
     NSLog(@"Notification received");
     
-    if (notificationMessage && self.callback)
-    {
-        NSMutableString *jsonStr = [NSMutableString stringWithString:@"{"];
-        [self parseDictionary:notificationMessage intoJSON:jsonStr];
-        [jsonStr appendString:@"}"];
-        
-        NSLog(@"notification message: %@", jsonStr);
-        
-        NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
-        [self.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
+    if (notificationMessage) {
+        if(self.callback) {
+            [self sendNotificationMessage:notificationMessage];
+        } else {
+            self.launchNotification = notificationMessage;
+        }
     }
+}
+
+-(void)sendNotificationMessage:(NSDictionary *)notificationMessage
+{
+    NSMutableString *jsonStr = [NSMutableString stringWithString:@"{"];
+    [self parseDictionary:notificationMessage intoJSON:jsonStr];
+    [jsonStr appendString:@"}"];
+    
+    NSLog(@"notification message: %@", jsonStr);
+    
+    NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
+    [self.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
 }
 
 -(void)parseDictionary:(NSDictionary *)inDictionary intoJSON:(NSMutableString *)jsonString

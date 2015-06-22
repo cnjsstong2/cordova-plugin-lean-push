@@ -151,16 +151,16 @@ void swizzleMethod(Class c, SEL originalSelector)
 {
     [self swizzled_application:application didReceiveRemoteNotification:userInfo];
 
-    if (application.applicationState == UIApplicationStateActive) {
-        CDVLeanPush *pushHandler = [self getCommandInstance:@"CDVLeanPush"];
-        [pushHandler notificationReceived:userInfo];
-    } else {
+//    if (application.applicationState == UIApplicationStateActive) {
+    CDVLeanPush *pushHandler = [self getCommandInstance:@"LeanPush"];
+    [pushHandler notificationReceived:userInfo];
+//    } else {
         // The application was just brought from the background to the foreground,
         // so we consider the app as having been "opened by a push notification."
-        [AVAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
+//        [AVAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
 
-        self.launchNotification = userInfo;
-    }
+//        self.launchNotification = userInfo;
+//    }
 
     int num=application.applicationIconBadgeNumber;
     if(num!=0){
